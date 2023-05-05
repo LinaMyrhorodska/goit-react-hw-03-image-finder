@@ -23,12 +23,18 @@ ul, ol {
     padding: 0;
     list-style: none;
 }
+
+img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
 div {
-    height: '100vh',
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    fontSize: 40,
-    color: '#010101'
+    // height: '100vh',
+    // display: 'flex',
+    // justifyContent: 'center',
+    // alignItems: 'center',
+    // fontSize: 40,
+    // color: '#010101'
 }
 `

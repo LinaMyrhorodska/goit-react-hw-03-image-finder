@@ -1,5 +1,6 @@
 import { Component } from "react";
 import { toast } from "react-toastify";
+import { SearchField, SearchForm, SearchBtn, SearchInput } from "./SearchBar.styled";
 
 export class SearchBar extends Component {
     state = {
@@ -14,7 +15,7 @@ export class SearchBar extends Component {
         e.preventDefault();
 
         if (this.state.searchedName.trim() === '') {
-            toast.error("Enter something!!");
+            toast.warn("Please enter something in a search field");
             return;
         }
 
@@ -25,18 +26,20 @@ export class SearchBar extends Component {
 
     render() {
         return (
-            <form onSubmit={this.onSubmit}>
-                <input
+            <SearchField>
+            <SearchForm onSubmit={this.onSubmit}>
+                <SearchInput
                     type="text"
                     name="searchedName"
                     value={this.state.searchedName}
                     onChange={this.onSearchedNameChange}
                     autoComplete="off"
                 />
-                <button type="submit" >
+                <SearchBtn type="submit" >
                     Search
-                </button>
-            </form>
+                </SearchBtn>
+            </SearchForm>
+            </SearchField>
     )
-}
-}
+    };
+};

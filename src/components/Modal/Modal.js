@@ -1,5 +1,6 @@
 import { Component } from "react";
 import { createPortal } from "react-dom";
+import { ModalOverlay } from "./Modal.styled";
 
 const modal = document.querySelector('#modal-root');
 
@@ -27,11 +28,10 @@ export class Modal extends Component {
 
     render() {
         return createPortal(
-            <div
-                onClick={this.handleModalClose}
-            >
-                <div>{ this.props.children}</div>
-            </div>,
+            <ModalOverlay onClick={this.handleModalClose}>
+                <div >
+                    {this.props.children}</div>
+            </ModalOverlay>,
             modal)
     }
 }

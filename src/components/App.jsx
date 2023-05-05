@@ -9,6 +9,7 @@ import { ImageGallery } from './ImageGallery/ImageGallery';
 import { Modal } from './Modal/Modal';
 import { Loader } from './Loader/Loader';
 import { getImages } from './API/getImages';
+import { toast } from "react-toastify";
 
 export class App extends Component {
   state = {
@@ -22,6 +23,7 @@ export class App extends Component {
     empty: false,
     largeImageURL: '',
     alt: '',
+    showSuccessToast: true,
   };
 
   componentDidUpdate(prevProps, prevState) {
@@ -30,26 +32,42 @@ export class App extends Component {
     }
   };
 
-  API = (name, page) => {
-    this.setState({ loading: true });
+ API = (name, page) => {
+  this.setState({ loading: true });
 
-    getImages(name, page).then(r => r.json()).then(data => {
+  getImages(name, page)
+    .then(r => r.json())
+    .then(data => {
       if (data.hits.length === 0) {
         this.setState({ empty: true });
-      } this.setState(prevState => ({
-        page: prevState.page,
-        images: [...prevState.images, ...data.hits],
-        total: data.total
-      }));
-    }).catch(error => {
-      this.setState({ error: error.message })
-    }).finally(() => {
-      this.setState({ loading: false });
+         toast.error(`No images found for "${name}"`);
+      } else {
+        this.setState(prevState => ({
+          page: prevState.page,
+          images: [...prevState.images, ...data.hits],
+          total: data.total,
+        }));
+
+        if (this.state.page === 1) {
+          toast.success(`${data.totalHits} images were found`);
+          this.setState({ showSuccessToast: false });
+        }
+      }
+        if (this.state.page >= Math.ceil(data.totalHits / 12) && this.state.page !== 1 ) {
+          toast.warning("No more pictures left!");
+        };
+
     })
-
-  };
-
+    .catch(error => {
+      this.setState({ error: error.message });
+    })
+    .finally(() => {
+      this.setState({ loading: false });
+    });
+};
+  
   onFormSubmit = searchedName => {
+
     this.setState({
       searchedName,
       images: [],
@@ -65,8 +83,9 @@ export class App extends Component {
   onLoadMore = () => {
     this.setState(prevState => ({
       page: prevState.page + 1,
+      showSuccessToast: true,
     }));
-  };
+};
 
   onModalOpen = (largeImageURL, alt) => {
     this.setState({ showModal: true, largeImageURL, alt });
@@ -79,16 +98,17 @@ export class App extends Component {
   render() {
     return (
       <Layout>
-        <ToastContainer autoClose={2000}/>
+        <ToastContainer autoClose={2000} />
         <SearchBar onSubmit={this.onFormSubmit} />
         <ImageGallery switchModal={this.onModalOpen} images={this.state.images} />
         {this.state.loading && <Loader />}
-        {this.state.total / 12 > this.state.page && <Button onClick={this.onLoadMore} />}
-        {this.state.showModal && (
-          <Modal onModalClose={this.onModalClose}>
+        {!this.state.noMorePictures && this.state.total / 12 > this.state.page && (
+          <Button onClick={this.onLoadMore} />)}
+        {this.state.showModal &&
+          (<Modal onModalClose={this.onModalClose}>
             <img src={this.state.largeImageURL} alt={this.state.alt} />
           </Modal>
-        )}
+          )}
         <GlobalStyle />
       </Layout>
     );

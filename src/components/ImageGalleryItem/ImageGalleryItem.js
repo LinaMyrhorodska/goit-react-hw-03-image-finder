@@ -1,23 +1,24 @@
 import PropTypes from 'prop-types';
+import { GalleryItem, GalleryImage } from './ImageGalleryItem.styled';
 
 export const ImageGalleryItem = ({ images, switchModal }) => {
     return (
-        <div>
+        <>
             {
                 images.map(item => (
-                    <li
+                    <GalleryItem
                         key={item.id}
                         onClick={() => switchModal(item.largeImageURL, item.tags) }
                     >
-                        <img
+                        <GalleryImage
                             loading="lazy"
                             src={item.webformatURL}
                             alt={item.tags}
                         />
-                    </li>
+                    </GalleryItem>
                 ))
             }
-        </div>
+        </>
     )
 };
 
