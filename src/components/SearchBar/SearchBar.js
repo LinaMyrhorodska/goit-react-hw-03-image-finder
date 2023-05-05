@@ -6,11 +6,11 @@ export class SearchBar extends Component {
         searchedName: '',
     };
 
-    handleSearchedNameChange = e => {
+    onSearchedNameChange = e => {
         this.setState({ searchedName: e.currentTarget.value.toLowerCase() });
     };
 
-    handleSubmit = e => {
+    onSubmit = e => {
         e.preventDefault();
 
         if (this.state.searchedName.trim() === '') {
@@ -25,14 +25,15 @@ export class SearchBar extends Component {
 
     render() {
         return (
-            <form onSubmit={this.handleSubmit}>
+            <form onSubmit={this.onSubmit}>
                 <input
                     type="text"
                     name="searchedName"
                     value={this.state.searchedName}
-                    onChange={this.handleSearchedNameChange}
+                    onChange={this.onSearchedNameChange}
+                    autoComplete="off"
                 />
-                <button>
+                <button type="submit" >
                     Search
                 </button>
             </form>
