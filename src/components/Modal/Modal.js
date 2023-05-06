@@ -1,6 +1,7 @@
 import { Component } from "react";
 import { createPortal } from "react-dom";
 import { ModalOverlay } from "./Modal.styled";
+import PropTypes from 'prop-types';
 
 const modal = document.querySelector('#modal-root');
 
@@ -22,7 +23,7 @@ export class Modal extends Component {
 
     handleModalClose = e => {
         if (e.currentTarget === e.target) {
-            this.props.onModalClose()
+            this.props.onModalClose();
         }
     };
 
@@ -34,4 +35,9 @@ export class Modal extends Component {
             </ModalOverlay>,
             modal)
     }
+};
+
+Modal.propTypes = {
+    children: PropTypes.object.isRequired,
+    onModalClose: PropTypes.func.isRequired
 }

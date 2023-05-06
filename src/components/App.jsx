@@ -92,7 +92,7 @@ export class App extends Component {
   };
 
   onModalClose = () => {
-    this.setState({ showModal: false });
+    this.setState({ showModal: false, largeImageURL: '', alt: '' });
   }
 
   render() {

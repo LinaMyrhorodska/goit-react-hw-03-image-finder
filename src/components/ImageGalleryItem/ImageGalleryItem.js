@@ -24,7 +24,12 @@ export const ImageGalleryItem = ({ images, switchModal }) => {
 
 ImageGalleryItem.propTypes = {
     images: PropTypes.arrayOf(
-        PropTypes.object
-    ).isRequired,
+    PropTypes.shape({
+      id: PropTypes.number.isRequired,
+      webformatURL: PropTypes.string.isRequired,
+      largeImageURL: PropTypes.string.isRequired,
+      tags: PropTypes.string.isRequired,
+    }).isRequired,
+  ),
     switchModal: PropTypes.func.isRequired,
 };
